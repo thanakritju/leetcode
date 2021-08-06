@@ -2,7 +2,53 @@ package trappingrainwater
 
 func trap(height []int) int {
 	count := 0
+	foundStartEdge := false
+	startEdgeIndex := 0
+	endEdgeIndex := 0
+
+	index := 0
+	for true {
+		if !foundStartEdge {
+			if isLocalMaxima(index, height) {
+				startEdgeIndex = index
+				foundStartEdge = true
+			} else {
+				index++
+			}
+		} else {
+			endEdgeIndex = findEndEdge(startEdgeIndex, height)
+			if endEdgeIndex == 0 {
+				break
+			}
+			count += getWaterBetweenIndexes(startEdgeIndex, endEdgeIndex, height)
+			startEdgeIndex = endEdgeIndex
+		}
+	}
+
 	return count
+}
+
+func findEndEdge(startIndex int, height []int) int {
+	foundLocalMinima := false
+	maxHeightIndex := 0
+	maxHeight := 0
+	for i := startIndex; i < len(height); i++ {
+		if !foundLocalMinima {
+			if isLocalMinima(i, height) {
+				foundLocalMinima = true
+			}
+		} else {
+			if isLocalMaxima(i, height) {
+				if height[i] >= height[startIndex] {
+					return i
+				} else if height[i] >= maxHeight {
+					maxHeightIndex = i
+					maxHeight = height[i]
+				}
+			}
+		}
+	}
+	return maxHeightIndex
 }
 
 func isLocalMaxima(index int, height []int) bool {
@@ -15,7 +61,7 @@ func isLocalMaxima(index int, height []int) bool {
 		foundRight = true
 	}
 	bufferLeft := 1
-	for !foundLeft {
+	for !foundLeft && index-bufferLeft >= 0 {
 		if height[index-bufferLeft] == height[index] {
 			bufferLeft++
 		} else {
@@ -26,7 +72,7 @@ func isLocalMaxima(index int, height []int) bool {
 		}
 	}
 	bufferRight := 1
-	for !foundRight {
+	for !foundRight && index+bufferRight < len(height) {
 		if height[index] == height[index+bufferRight] {
 			bufferRight++
 		} else {
@@ -49,7 +95,7 @@ func isLocalMinima(index int, height []int) bool {
 		foundRight = true
 	}
 	bufferLeft := 1
-	for !foundLeft {
+	for !foundLeft && index-bufferLeft >= 0 {
 		if height[index-bufferLeft] == height[index] {
 			bufferLeft++
 		} else {
@@ -60,7 +106,7 @@ func isLocalMinima(index int, height []int) bool {
 		}
 	}
 	bufferRight := 1
-	for !foundRight {
+	for !foundRight && index+bufferRight < len(height) {
 		if height[index] == height[index+bufferRight] {
 			bufferRight++
 		} else {
@@ -74,7 +120,6 @@ func isLocalMinima(index int, height []int) bool {
 }
 
 func getWaterBetweenIndexes(index1 int, index2 int, height []int) int {
-	println(index1, index2)
 	var maxHeight int
 	if height[index1] > height[index2] {
 		maxHeight = height[index2]
