@@ -32,6 +32,9 @@ func TestIsLocalMaxima(t *testing.T) {
 		{1, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, true},
 		{3, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, true},
 		{7, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, true},
+		{1, []int{0, 1, 1, 1, 0}, true},
+		{3, []int{0, 1, 1, 1, 0}, true},
+		{3, []int{0, 1, 1, 1}, true},
 		{1, []int{0, 1}, true},
 	}
 
@@ -52,6 +55,8 @@ func TestIsLocalMinima(t *testing.T) {
 		{7, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, false},
 		{1, []int{2, 1}, true},
 		{0, []int{2, 1}, false},
+		{1, []int{3, 1, 1, 1, 3}, true},
+		{3, []int{3, 1, 1, 1, 3}, true},
 		{3, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, false},
 	}
 

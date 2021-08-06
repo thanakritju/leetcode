@@ -6,23 +6,71 @@ func trap(height []int) int {
 }
 
 func isLocalMaxima(index int, height []int) bool {
+	foundLeft := false
 	if index == 0 {
-		return height[index] > height[index+1]
+		foundLeft = true
 	}
+	foundRight := false
 	if index == len(height)-1 {
-		return height[index-1] < height[index]
+		foundRight = true
 	}
-	return height[index-1] < height[index] && height[index] > height[index+1]
+	bufferLeft := 1
+	for !foundLeft {
+		if height[index-bufferLeft] == height[index] {
+			bufferLeft++
+		} else {
+			foundLeft = true
+			if height[index-bufferLeft] > height[index] {
+				return false
+			}
+		}
+	}
+	bufferRight := 1
+	for !foundRight {
+		if height[index] == height[index+bufferRight] {
+			bufferRight++
+		} else {
+			foundRight = true
+			if height[index] < height[index+bufferRight] {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func isLocalMinima(index int, height []int) bool {
+	foundLeft := false
 	if index == 0 {
-		return height[index] < height[index+1]
+		foundLeft = true
 	}
+	foundRight := false
 	if index == len(height)-1 {
-		return height[index-1] > height[index]
+		foundRight = true
 	}
-	return height[index-1] > height[index] && height[index] < height[index+1]
+	bufferLeft := 1
+	for !foundLeft {
+		if height[index-bufferLeft] == height[index] {
+			bufferLeft++
+		} else {
+			foundLeft = true
+			if height[index-bufferLeft] < height[index] {
+				return false
+			}
+		}
+	}
+	bufferRight := 1
+	for !foundRight {
+		if height[index] == height[index+bufferRight] {
+			bufferRight++
+		} else {
+			foundRight = true
+			if height[index] > height[index+bufferRight] {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func getWaterBetweenIndexes(index1 int, index2 int, height []int) int {
