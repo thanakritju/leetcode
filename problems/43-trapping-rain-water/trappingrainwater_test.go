@@ -7,17 +7,30 @@ import (
 )
 
 func TestTrap(t *testing.T) {
-	input := []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}
+	var tests = []struct {
+		input    []int
+		expected int
+	}{
+		{[]int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 6},
+		{[]int{4, 2, 0, 3, 2, 5}, 9},
+	}
 
-	out := trap(input)
-
-	assert.Equal(t, out, 6, "Example from leetcode")
+	for _, test := range tests {
+		assert.Equal(t, trap(test.input), test.expected)
+	}
 }
 
-func TestTrap2(t *testing.T) {
-	input := []int{4, 2, 0, 3, 2, 5}
+func TestGetWaterBetweenIndexes(t *testing.T) {
+	var tests = []struct {
+		inputIndex1 int
+		inputIndex2 int
+		inputArray  []int
+		expected    int
+	}{
+		{3, 7, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 4},
+	}
 
-	out := trap(input)
-
-	assert.Equal(t, out, 9, "Example from leetcode")
+	for _, test := range tests {
+		assert.Equal(t, getWaterBetweenIndexes(test.inputIndex1, test.inputIndex2, test.inputArray), test.expected)
+	}
 }
