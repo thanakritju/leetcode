@@ -16,7 +16,8 @@ func TestTrap(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		assert.Equal(t, trap(test.input), test.expected)
+		actual := trap(test.input)
+		assert.Equal(t, test.expected, actual)
 	}
 }
 
@@ -28,9 +29,12 @@ func TestGetWaterBetweenIndexes(t *testing.T) {
 		expected    int
 	}{
 		{3, 7, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 4},
+		{1, 3, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 1},
+		{8, 10, []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}, 1},
 	}
 
 	for _, test := range tests {
-		assert.Equal(t, getWaterBetweenIndexes(test.inputIndex1, test.inputIndex2, test.inputArray), test.expected)
+		actual := getWaterBetweenIndexes(test.inputIndex1, test.inputIndex2, test.inputArray)
+		assert.Equal(t, test.expected, actual)
 	}
 }
