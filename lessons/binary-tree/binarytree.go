@@ -64,3 +64,18 @@ func levelOrderRecursive(arr [][]int, root *TreeNode, depth int) [][]int {
 	}
 	return arr
 }
+
+func searchBST(root *TreeNode, val int) *TreeNode {
+	if root != nil {
+		if root.Val == val {
+			return root
+		}
+		if temp := searchBST(root.Left, val); temp != nil {
+			return temp
+		}
+		if temp := searchBST(root.Right, val); temp != nil {
+			return temp
+		}
+	}
+	return nil
+}
