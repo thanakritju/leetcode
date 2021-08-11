@@ -65,3 +65,23 @@ func getRowHelper(rowIndex int, columnIndex int, memory [][]int) int {
 	}
 	return getRowHelper(rowIndex-1, columnIndex-1, memory) + getRowHelper(rowIndex-1, columnIndex, memory)
 }
+
+func fib(n int) int {
+	cache := make(map[int]int)
+	return fibRecursive(n, cache)
+}
+
+func fibRecursive(n int, cache map[int]int) int {
+	i, ok := cache[n]
+	var result int
+	if ok {
+		result = i
+	}
+	if n < 2 {
+		result = n
+	} else {
+		result = fibRecursive(n-1, cache) + fibRecursive(n-2, cache)
+	}
+	cache[n] = result
+	return result
+}

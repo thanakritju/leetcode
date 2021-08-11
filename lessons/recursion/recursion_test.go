@@ -68,6 +68,22 @@ func TestGetRow(t *testing.T) {
 		assert.Equal(t, test.expected, actual, test)
 	}
 }
+func TestFib(t *testing.T) {
+	var tests = []struct {
+		input    int
+		expected int
+	}{
+		{3, 2},
+		{4, 3},
+		{1, 1},
+		{0, 0},
+	}
+
+	for _, test := range tests {
+		actual := fib(test.input)
+		assert.Equal(t, test.expected, actual, test)
+	}
+}
 
 func arrayToLinklist(arr []int) *ListNode {
 	tempHead := &ListNode{}
