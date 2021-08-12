@@ -2,28 +2,29 @@ package courseschedule
 
 func canFinish(numCourses int, prerequisites [][]int) bool {
 	prerequisitesSet := transformEdgesToSet(prerequisites)
+	visited := map[int]bool{}
 	for i := 0; i < numCourses; i++ {
-		if !dfs(i, prerequisitesSet) {
+		_, isVisited := visited[i]
+		if isVisited {
+			continue
+		}
+		if !dfs(i, prerequisitesSet, visited) {
 			return false
 		}
 	}
 	return true
 }
 
-func dfs(v int, edges map[int][]int) bool {
-	return dfsUtil(v, edges, map[int]bool{})
-}
-
-func dfsUtil(v int, edges map[int][]int, visited map[int]bool) bool {
+func dfs(v int, edges map[int][]int, visited map[int]bool) bool {
 	result := true
 	visited[v] = true
 	nextVertices := edges[v]
 	if len(nextVertices) != 0 {
 		for _, nextV := range nextVertices {
-			onStack, isVisted := visited[nextV]
+			onStack, isVisited := visited[nextV]
 
-			if !isVisted {
-				result = result && dfsUtil(nextV, edges, visited)
+			if !isVisited {
+				result = result && dfs(nextV, edges, visited)
 			} else if onStack {
 				result = result && false
 			}
