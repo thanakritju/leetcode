@@ -85,6 +85,24 @@ func TestFib(t *testing.T) {
 	}
 }
 
+func TestClimbStairs(t *testing.T) {
+	var tests = []struct {
+		input    int
+		expected int
+	}{
+		{5, 8},
+		{4, 5},
+		{3, 3},
+		{2, 2},
+		{1, 1},
+	}
+
+	for _, test := range tests {
+		actual := climbStairs(test.input)
+		assert.Equal(t, test.expected, actual, test)
+	}
+}
+
 func arrayToLinklist(arr []int) *ListNode {
 	tempHead := &ListNode{}
 	head := tempHead

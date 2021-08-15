@@ -85,3 +85,15 @@ func fibRecursive(n int, cache map[int]int) int {
 	cache[n] = result
 	return result
 }
+
+func climbStairs(n int) int {
+	arr := []int{0, 1, 2, 3}
+	for {
+		lenArr := len(arr)
+		if lenArr > n {
+			break
+		}
+		arr = append(arr, arr[lenArr-1]+arr[lenArr-2])
+	}
+	return arr[n]
+}
