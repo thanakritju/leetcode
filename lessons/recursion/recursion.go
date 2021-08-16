@@ -97,3 +97,7 @@ func climbStairs(n int) int {
 	}
 	return arr[n]
 }
+
+func myPow(x float64, n int) float64 {
+	return 1
+}

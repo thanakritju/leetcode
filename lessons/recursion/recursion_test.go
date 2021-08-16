@@ -103,6 +103,25 @@ func TestClimbStairs(t *testing.T) {
 	}
 }
 
+func TestMyPow(t *testing.T) {
+	var tests = []struct {
+		inputX   float64
+		inputN   int
+		expected float64
+	}{
+		{2.0, 10, 1024.0},
+		{2.1, 3, 9.261},
+		{2.0, -2, 0.25},
+		{2.0, 0, 1.0},
+		{0.00001, 4294967296, 1.0},
+	}
+
+	for _, test := range tests {
+		actual := myPow(test.inputX, test.inputN)
+		assert.InDelta(t, test.expected, actual, 0.0001, test)
+	}
+}
+
 func arrayToLinklist(arr []int) *ListNode {
 	tempHead := &ListNode{}
 	head := tempHead
