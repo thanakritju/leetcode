@@ -16,7 +16,9 @@ func TestMinWindow(t *testing.T) {
 			inputT   string
 			expected string
 		}{
+			{"cabwefgewcwaefgcf", "cae", "cwae"},
 			{"ab", "a", "a"},
+			{"ab", "A", ""},
 			{"a", "b", ""},
 			{"ZZADOBECODEBANCZZ", "ABC", "BANC"},
 			{"ADOBECODEBANC", "ABC", "BANC"},

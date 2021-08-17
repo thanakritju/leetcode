@@ -1,7 +1,5 @@
 package minimumwindowsubstring
 
-import "fmt"
-
 func minWindow(s string, t string) string {
 	asciiTable := getTable(t)
 	stoppers := getStoppers(s, asciiTable)
@@ -19,34 +17,44 @@ func minWindow(s string, t string) string {
 		return ""
 	}
 
-	for len(stoppers) != 0 {
+	if len(t) == 1 {
+		if areSubset(s, t) {
+			return t
+		}
+		return ""
+	}
+
+	for len(stoppers) != 0 || end+1-start >= len(t) {
 		subsetLen := end - start
-		println("start: ", start, " end: ", end)
 		currentString := s[start : end+1]
 		if startPointerMove {
 			if areSubset(currentString, t) {
-				start++
-			} else {
 				if subsetLen < minLen {
-					ansStart = start - 1
+					ansStart = start
 					ansEnd = end
 					minLen = subsetLen
 				}
+				start++
+			} else {
+				if len(stoppers) == 0 {
+					break
+				}
 				start, stoppers = stoppers[0], stoppers[1:] // pop left
-				fmt.Printf("popLeftStart: %v stoppers: %v\n", start, stoppers)
 				startPointerMove = !startPointerMove
 			}
 		} else {
 			if areSubset(currentString, t) {
-				end--
-			} else {
 				if subsetLen < minLen {
 					ansStart = start
-					ansEnd = end + 1
+					ansEnd = end
 					minLen = subsetLen
 				}
-				end, stoppers = stoppers[len(stoppers)-1], stoppers[len(stoppers)-1:] // pop right
-				fmt.Printf("popRightEnd: %v stoppers: %v\n", end, stoppers)
+				end--
+			} else {
+				if len(stoppers) == 0 {
+					break
+				}
+				end, stoppers = stoppers[len(stoppers)-1], stoppers[:len(stoppers)-1] // pop right
 				startPointerMove = !startPointerMove
 			}
 		}
@@ -55,7 +63,7 @@ func minWindow(s string, t string) string {
 	return s[ansStart : ansEnd+1]
 }
 
-// "ZZADOBECODEBANCZZ", "ABC" ->[2 5 7 11 12 14]
+// "ZZADOBECODEBANCZZ", "ABC" -> [2 5 7 11 12 14]
 func getStoppers(s string, asciiTable [128]int) []int {
 	arr := []int{}
 	for index, char := range s {
