@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFindOrder(t *testing.T) {
+func TestCheckInclusion(t *testing.T) {
 	var tests = []struct {
 		inputS1  string
 		inputS2  string

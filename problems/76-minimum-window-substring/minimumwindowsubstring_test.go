@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFindOrder(t *testing.T) {
+func TestMinWindow(t *testing.T) {
 	var tests = []struct {
 		inputS   string
 		inputT   string
