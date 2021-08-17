@@ -16,6 +16,7 @@ func TestFindOrder(t *testing.T) {
 		{"a", "a", "a"},
 		{"a", "aa", ""},
 		{"ab", "ba", "ab"},
+		{"cccabcccc", "ba", "ab"},
 	}
 
 	for _, test := range tests {
