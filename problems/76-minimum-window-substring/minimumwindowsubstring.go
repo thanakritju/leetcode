@@ -1,8 +1,74 @@
 package minimumwindowsubstring
 
+import "fmt"
+
+type array struct {
+	array [52]int
+}
+
+func getArray(s string) array {
+	var a array
+	for i := 0; i < len(s); i++ {
+		a.addChar(s[i])
+	}
+	return a
+}
+
+func (a *array) addChar(c byte) {
+	if c >= 'a' {
+		a.array[c-'a'+26]++
+	} else {
+		a.array[c-'A']++
+	}
+}
+
+func (a *array) update(s string, oldIndex int, newIndex int, isStartPointer bool) {
+	fmt.Printf("Start updating string: %v isStartPointer: %v\n", s, isStartPointer)
+	if isStartPointer {
+		for i := oldIndex - 1; i >= newIndex; i-- {
+			fmt.Printf("Updating at i: %v, oldIndex: %v, newIndex: %v, value: %v\n%v\n", i, oldIndex, newIndex, string(s[i]), a.array)
+			a.addChar(s[i])
+		}
+	} else {
+		for i := oldIndex + 1; i <= newIndex; i++ {
+			fmt.Printf("Updating at i: %v, oldIndex: %v, newIndex: %v, value: %v\n%v\n", i, oldIndex, newIndex, string(s[i]), a.array)
+			a.addChar(s[i])
+		}
+	}
+}
+
+func (a *array) removeChar(c byte) {
+	if c >= 'a' {
+		a.array[c-'a'+26]--
+	} else {
+		a.array[c-'A']--
+	}
+}
+
+func (a array) matches(t array) bool {
+	for i := 0; i < 52; i++ {
+		if t.array[i] != 0 && a.array[i] < t.array[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func (a array) getByChar(c byte) int {
+	if c >= 'a' {
+		return a.array[c-'a'+26]
+	}
+	return a.array[c-'A']
+}
+
 func minWindow(s string, t string) string {
-	asciiTable := getTable(t)
-	stoppers := getStoppers(s, asciiTable)
+	arrayT := getArray(t)
+	arrayS := getArray(s)
+	stoppers := getStoppers(s, arrayT)
+	fmt.Printf("%v %v\n%v %v\n\n", s, arrayS, t, arrayT)
+	if len(stoppers) == 0 {
+		return ""
+	}
 
 	start := 0
 	end := len(s) - 1
@@ -18,43 +84,49 @@ func minWindow(s string, t string) string {
 	}
 
 	if len(t) == 1 {
-		if areSubset(s, t) {
+		if arrayS.matches(arrayT) {
 			return t
 		}
 		return ""
 	}
 
 	for len(stoppers) != 0 || end+1-start >= len(t) {
+		fmt.Printf("%v %v %v\n\n", start, end, stoppers)
 		subsetLen := end - start
-		currentString := s[start : end+1]
 		if startPointerMove {
-			if areSubset(currentString, t) {
+			if arrayS.matches(arrayT) {
 				if subsetLen < minLen {
 					ansStart = start
 					ansEnd = end
 					minLen = subsetLen
 				}
+				arrayS.removeChar(s[start])
 				start++
 			} else {
 				if len(stoppers) == 0 {
 					break
 				}
+				oldStart := start
 				start, stoppers = stoppers[0], stoppers[1:] // pop left
+				arrayS.update(s, oldStart, start, true)
 				startPointerMove = !startPointerMove
 			}
 		} else {
-			if areSubset(currentString, t) {
+			if arrayS.matches(arrayT) {
 				if subsetLen < minLen {
 					ansStart = start
 					ansEnd = end
 					minLen = subsetLen
 				}
+				arrayS.removeChar(s[end])
 				end--
 			} else {
 				if len(stoppers) == 0 {
 					break
 				}
+				oldEnd := end
 				end, stoppers = stoppers[len(stoppers)-1], stoppers[:len(stoppers)-1] // pop right
+				arrayS.update(s, oldEnd, end, false)
 				startPointerMove = !startPointerMove
 			}
 		}
@@ -64,33 +136,12 @@ func minWindow(s string, t string) string {
 }
 
 // "ZZADOBECODEBANCZZ", "ABC" -> [2 5 7 11 12 14]
-func getStoppers(s string, asciiTable [128]int) []int {
+func getStoppers(s string, t array) []int {
 	arr := []int{}
-	for index, char := range s {
-		if asciiTable[int(char)] < 0 {
-			arr = append(arr, index)
+	for i := 0; i < len(s); i++ {
+		if t.getByChar(s[i]) > 0 {
+			arr = append(arr, i)
 		}
 	}
 	return arr
-}
-
-func areSubset(s string, t string) bool {
-	asciiTable := getTable(t)
-	for i := 0; i < len(s); i++ {
-		asciiTable[int(s[i])]++
-	}
-	for _, value := range asciiTable {
-		if value < 0 {
-			return false
-		}
-	}
-	return true
-}
-
-func getTable(t string) [128]int {
-	var asciiTable [128]int
-	for i := 0; i < len(t); i++ {
-		asciiTable[int(t[i])]--
-	}
-	return asciiTable
 }
