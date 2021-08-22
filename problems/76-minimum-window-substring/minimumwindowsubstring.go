@@ -15,34 +15,23 @@ func getArray(s string) array {
 }
 
 func (a *array) addChar(c byte) {
-	if c >= 'a' {
-		a.array[c-'a'+26]++
-	} else {
-		a.array[c-'A']++
-	}
+	a.array[charToIndex(c)]++
 }
 
 func (a *array) update(s string, oldIndex int, newIndex int, isStartPointer bool) {
-	fmt.Printf("Start updating string: %v isStartPointer: %v\n", s, isStartPointer)
 	if isStartPointer {
 		for i := oldIndex - 1; i >= newIndex; i-- {
-			fmt.Printf("Updating at i: %v, oldIndex: %v, newIndex: %v, value: %v\n%v\n", i, oldIndex, newIndex, string(s[i]), a.array)
 			a.addChar(s[i])
 		}
 	} else {
 		for i := oldIndex + 1; i <= newIndex; i++ {
-			fmt.Printf("Updating at i: %v, oldIndex: %v, newIndex: %v, value: %v\n%v\n", i, oldIndex, newIndex, string(s[i]), a.array)
 			a.addChar(s[i])
 		}
 	}
 }
 
 func (a *array) removeChar(c byte) {
-	if c >= 'a' {
-		a.array[c-'a'+26]--
-	} else {
-		a.array[c-'A']--
-	}
+	a.array[charToIndex(c)]--
 }
 
 func (a array) matches(t array) bool {
@@ -54,24 +43,37 @@ func (a array) matches(t array) bool {
 	return true
 }
 
-func (a array) getByChar(c byte) int {
+func charToIndex(c byte) int {
 	if c >= 'a' {
-		return a.array[c-'a'+26]
+		return int(c - 'a' + 26)
 	}
-	return a.array[c-'A']
+	return int(c - 'A')
+}
+
+func (a array) check(t array, c byte) bool {
+	index := charToIndex(c)
+	if t.array[index] == 0 {
+		return true
+	}
+	return a.array[index] >= t.array[index]
+}
+
+func (a array) getByChar(c byte) int {
+	return a.array[charToIndex(c)]
 }
 
 func minWindow(s string, t string) string {
 	arrayT := getArray(t)
 	arrayS := getArray(s)
 	stoppers := getStoppers(s, arrayT)
-	fmt.Printf("%v %v\n%v %v\n\n", s, arrayS, t, arrayT)
 	if len(stoppers) == 0 {
 		return ""
 	}
 
 	start := 0
 	end := len(s) - 1
+	start, stoppers = stoppers[0], stoppers[1:]
+	end, stoppers = stoppers[len(stoppers)-1], stoppers[:len(stoppers)-1]
 
 	minLen := len(s)
 	ansStart := 0
@@ -83,25 +85,33 @@ func minWindow(s string, t string) string {
 		return ""
 	}
 
-	if len(t) == 1 {
-		if arrayS.matches(arrayT) {
-			return t
-		}
+	if arrayS.matches(arrayT) {
+		minLen = len(s)
+		ansStart = 0
+		ansEnd = len(s) - 1
+	} else {
 		return ""
 	}
 
-	for len(stoppers) != 0 || end+1-start >= len(t) {
-		fmt.Printf("%v %v %v\n\n", start, end, stoppers)
+	if len(t) == 1 {
+		return t
+	}
+
+	for end+1-start > len(t) {
+		fmt.Printf("start %v end %v %v\n", start, end, stoppers)
 		subsetLen := end - start
 		if startPointerMove {
-			if arrayS.matches(arrayT) {
+			arrayS.removeChar(s[start])
+			start++
+			if arrayS.check(arrayT, s[start-1]) {
 				if subsetLen < minLen {
 					ansStart = start
 					ansEnd = end
 					minLen = subsetLen
+					fmt.Printf("saving value %v end+1-start %v len(t) %v startPointerMove %v\n", s[ansStart:ansEnd+1], end+1-start, len(t), startPointerMove)
+				} else if minLen == subsetLen && ansEnd == end && ansStart == start {
+					break
 				}
-				arrayS.removeChar(s[start])
-				start++
 			} else {
 				if len(stoppers) == 0 {
 					break
@@ -112,14 +122,17 @@ func minWindow(s string, t string) string {
 				startPointerMove = !startPointerMove
 			}
 		} else {
-			if arrayS.matches(arrayT) {
+			arrayS.removeChar(s[end])
+			end--
+			if arrayS.check(arrayT, s[end+1]) {
 				if subsetLen < minLen {
 					ansStart = start
 					ansEnd = end
 					minLen = subsetLen
+					fmt.Printf("saving value %v end+1-start %v len(t) %v startPointerMove %v\n", s[ansStart:ansEnd+1], end+1-start, len(t), startPointerMove)
+				} else if minLen == subsetLen && ansEnd == end && ansStart == start {
+					break
 				}
-				arrayS.removeChar(s[end])
-				end--
 			} else {
 				if len(stoppers) == 0 {
 					break

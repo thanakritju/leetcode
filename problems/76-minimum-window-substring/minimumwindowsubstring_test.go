@@ -22,6 +22,9 @@ func TestMinWindow(t *testing.T) {
 		{"ADOBECODEBANC", "ABC", "BANC"},
 		{"cabwefgewcwaefgcf", "cae", "cwae"},
 		{"cccabcccc", "ba", "ab"},
+		{"acbbaca", "aba", "baca"},
+		{"aaaaaaaaaaaabbbbbcdd", "abcdd", "abbbbbcdd"},
+		{"abcabdebac", "cad", "cabd"},
 	}
 
 	for _, test := range tests {
