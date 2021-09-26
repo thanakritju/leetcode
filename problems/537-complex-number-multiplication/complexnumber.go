@@ -11,10 +11,8 @@ type complex struct {
 	img  int
 }
 
-func (c1 complex) Multiply(c2 complex) complex {
-	fmt.Println(c1)
-	fmt.Println(c2)
-	return complex{real: (c1.real*c2.real - c1.img*c2.img), img: (c1.real*c2.img + c1.img*c2.real)}
+func (c complex) Multiply(c2 complex) complex {
+	return complex{real: (c.real*c2.real - c.img*c2.img), img: (c.real*c2.img + c.img*c2.real)}
 }
 
 func (c complex) String() string {
@@ -24,8 +22,7 @@ func (c complex) String() string {
 func complexNumberMultiply(num1 string, num2 string) string {
 	com1 := createComplex(num1)
 	com2 := createComplex(num2)
-	com := com1.Multiply(com2)
-	return com.String()
+	return com1.Multiply(com2).String()
 }
 
 func createComplex(str string) complex {
