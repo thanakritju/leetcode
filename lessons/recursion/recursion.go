@@ -75,7 +75,7 @@ func fibRecursive(n int, cache map[int]int) int {
 	i, ok := cache[n]
 	var result int
 	if ok {
-		result = i
+		return i
 	}
 	if n < 2 {
 		result = n

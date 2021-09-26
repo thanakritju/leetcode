@@ -153,12 +153,3 @@ func linklistToArray(head *ListNode) []int {
 	}
 	return arr
 }
-
-func printList(head *ListNode) {
-	if head == nil {
-		print("null\n")
-		return
-	}
-	print(head.Val, " -> ")
-	printList(head.Next)
-}
