@@ -99,5 +99,31 @@ func climbStairs(n int) int {
 }
 
 func myPow(x float64, n int) float64 {
-	return 1
+	dp := make(map[int]float64)
+	return myPowRecursive(x, n, dp)
+}
+
+func myPowRecursive(x float64, n int, dp map[int]float64) float64 {
+	if n == 0 {
+		return 1
+	}
+	if n == 1 {
+		return x
+	}
+
+	v, ok := dp[n]
+	if ok {
+		return v
+	}
+
+	n1 := n / 2
+	n2 := n - n1
+	if n > 1 {
+		result := myPowRecursive(x, n1, dp) * myPowRecursive(x, n2, dp)
+		dp[n] = result
+		return result
+	}
+	result := myPowRecursive(x, -n1, dp) * myPowRecursive(x, -n2, dp)
+	dp[n] = result
+	return 1 / result
 }
