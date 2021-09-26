@@ -14,6 +14,7 @@ func TestComplexNumberMultiply(t *testing.T) {
 	}{
 		{"1+1i", "1+1i", "0+2i"},
 		{"1+-1i", "1+-1i", "0+-2i"},
+		{"78+-76i", "-86+72i", "-1236+12152i"},
 	}
 
 	for _, test := range tests {
