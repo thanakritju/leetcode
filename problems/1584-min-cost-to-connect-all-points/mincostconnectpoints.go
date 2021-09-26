@@ -3,7 +3,6 @@ package mincosttoconnectallpoints
 import "math"
 
 func minCostConnectPoints(points [][]int) int {
-	g := graph{}
 	return 0
 }
 
