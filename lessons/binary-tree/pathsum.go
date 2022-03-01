@@ -1,15 +1,18 @@
 package binarytree
 
 func hasPathSum(root *TreeNode, targetSum int) bool {
-	return hasPathSumTopDown(root, false, 0, targetSum)
-}
+	ans := false
+	subSum := targetSum - root.Val
 
-func hasPathSumTopDown(root *TreeNode, answer bool, currentSum int, targetSum int) bool {
-	if root != nil {
-		currentSum += root.Val
-		answer = answer || (currentSum == targetSum && root.Left == nil && root.Right == nil)
-		answer = answer || hasPathSumTopDown(root.Left, answer, currentSum, targetSum)
-		answer = answer || hasPathSumTopDown(root.Right, answer, currentSum, targetSum)
+	if subSum == 0 && root.Left == nil && root.Right == nil {
+		return true
 	}
-	return answer
+
+	if root.Left != nil {
+		ans = ans || hasPathSum(root.Left, subSum)
+	}
+	if root.Right != nil {
+		ans = ans || hasPathSum(root.Right, subSum)
+	}
+	return ans
 }

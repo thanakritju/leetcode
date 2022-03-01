@@ -14,6 +14,7 @@ func TestPathSum(t *testing.T) {
 		expected       int
 	}{
 		{[]string{"10", "5", "-3", "3", "2", "null", "11", "3", "-2", "null", "1"}, 8, 3},
+		{[]string{"10", "5", "-2", "2", "-1", "null", "9", "null", "7", "null", "3"}, 7, 4},
 		{[]string{"5", "4", "8", "11", "null", "13", "4", "7", "2", "null", "null", "5", "1"}, 22, 3},
 	}
 
