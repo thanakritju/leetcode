@@ -7,42 +7,27 @@ type TreeNode struct {
 }
 
 func pathSum(root *TreeNode, targetSum int) int {
-	s, v := pathSumRec(root, 0, []int{}, []*TreeNode{})
-	count := 0
-	for i := 0; i < len(s); i++ {
-		for j := i; j < len(s); j++ {
-			pathSum := s[j] - s[i] + v[i].Val
-			if pathSum == targetSum && findPath(v[i], v[j]) {
-				count += 1
-			}
+	return findPath(root, &[]*TreeNode{}, targetSum)
+}
+
+func findPath(node *TreeNode, path *[]*TreeNode, target int) int {
+	if node == nil {
+		return 0
+	}
+	ans := 0
+	*path = append(*path, node)
+	ans += findPath(node.Left, path, target)
+	ans += findPath(node.Right, path, target)
+
+	sum := 0
+	for i := len(*path) - 1; i > -1; i-- {
+		sum += (*path)[i].Val
+		if sum == target {
+			ans += 1
 		}
 	}
-	return count
-}
 
-func findPath(node *TreeNode, target *TreeNode) bool {
-	if node == nil {
-		return false
-	}
-	if node == target {
-		return true
-	}
-	if findPath(node.Left, target) {
-		return true
-	}
-	if findPath(node.Right, target) {
-		return true
-	}
-	return false
-}
+	*path = (*path)[:len(*path)-1]
 
-func pathSumRec(node *TreeNode, sum int, s []int, v []*TreeNode) ([]int, []*TreeNode) {
-	if node != nil {
-		sum = sum + node.Val
-		s = append(s, sum)
-		v = append(v, node)
-		s, v = pathSumRec(node.Left, sum, s, v)
-		s, v = pathSumRec(node.Right, sum, s, v)
-	}
-	return s, v
+	return ans
 }
