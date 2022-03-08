@@ -14,6 +14,7 @@ func TestDistanceK(t *testing.T) {
 		inputK      int
 		expected    []int
 	}{
+		{[]string{"0", "2", "1", "null", "null", "3"}, 3, 3, []int{2}},
 		{[]string{"3", "5", "1", "6", "2", "0", "8", "null", "null", "7", "4"}, 5, 2, []int{7, 4, 1}},
 		{[]string{"5", "4", "8", "11", "null", "13", "4", "7", "2", "null", "null", "null", "null", "5", "1"}, 5, 2, []int{11, 13, 4}},
 		{[]string{"1"}, 1, 3, []int{}},
