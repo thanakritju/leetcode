@@ -23,3 +23,18 @@ func TestCombinationSum(t *testing.T) {
 		assert.Equal(t, test.expected, actual, test)
 	}
 }
+
+func TestArePermutation(t *testing.T) {
+	var tests = []struct {
+		inputArray  []int
+		inputTarget []int
+		expected    bool
+	}{
+		{[]int{2, 1, 1, 2, 1, 1, 1}, []int{2, 1, 2, 1, 1, 1, 1}, true},
+	}
+
+	for _, test := range tests {
+		actual := arePermutation(test.inputArray, test.inputTarget)
+		assert.Equal(t, test.expected, actual, test)
+	}
+}

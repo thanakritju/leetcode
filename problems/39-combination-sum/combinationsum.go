@@ -1,13 +1,11 @@
 package combinationsum
 
 import (
-	"fmt"
 	"sort"
 )
 
 func combinationSum(candidates []int, target int) [][]int {
 	sort.Ints(candidates)
-	fmt.Printf("candidates: %v", candidates)
 	return findSolutions([]int{}, candidates, target, [][]int{})
 }
 
@@ -33,20 +31,21 @@ func sum(array []int) int {
 }
 
 func merge(ans [][]int, current []int) [][]int {
-	sort.Ints(current)
 	for _, each := range ans {
 		if arePermutation(each, current) {
 			return ans
 		}
 	}
-	return append(ans, current)
+	tmp := make([]int, len(current))
+	copy(tmp, current)
+	return append(ans, tmp)
 }
 
 func arePermutation(a, b []int) bool {
 	if len(a) != len(b) {
 		return false
 	}
-	var table [26]int
+	var table [200]int
 	for i := 0; i < len(a); i++ {
 		table[a[i]]++
 		table[b[i]]--
