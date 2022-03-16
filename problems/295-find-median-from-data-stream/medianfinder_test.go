@@ -13,8 +13,10 @@ func TestMedianFinder(t *testing.T) {
 	assert.Equal(t, 1.5, obj.FindMedian())
 	obj.AddNum(3)
 	assert.Equal(t, 2.0, obj.FindMedian())
+}
 
-	obj = Constructor()
+func TestMedianFinder2(t *testing.T) {
+	obj := Constructor()
 	obj.AddNum(6)
 	assert.Equal(t, 6.0, obj.FindMedian())
 	obj.AddNum(10)
