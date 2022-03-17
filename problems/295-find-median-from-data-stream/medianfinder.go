@@ -75,22 +75,25 @@ func (m *MedianFinder) AddNum(num int) {
 	maxHeapLen := m.MaxHeap.Len()
 	minHeapLen := m.MinHeap.Len()
 	if maxHeapLen-minHeapLen > 1 {
-		heap.Push(&m.MinHeap, m.MaxHeap.Pop())
+		heap.Push(&m.MinHeap, heap.Pop(&m.MaxHeap))
 	}
 	if minHeapLen-maxHeapLen > 1 {
-		heap.Push(&m.MaxHeap, m.MinHeap.Pop())
+		heap.Push(&m.MaxHeap, heap.Pop(&m.MinHeap))
 	}
-	fmt.Printf("minHeap: %v\nmaxHeap: %v\n", m.MinHeap, m.MaxHeap)
+	fmt.Printf("minHeap: %v\nmaxHeap: %v\nmedian: %v\n\n", m.MinHeap, m.MaxHeap, m.FindMedian())
 }
 
 func (m *MedianFinder) FindMedian() float64 {
 	maxHeapLen := m.MaxHeap.Len()
 	minHeapLen := m.MinHeap.Len()
-	if maxHeapLen == minHeapLen {
-		return float64(m.MaxHeap.Top()*m.MinHeap.Top()) / float64(2)
+	if maxHeapLen == 0 && minHeapLen == 0 {
+		return 0
 	}
 	if maxHeapLen > minHeapLen {
 		return float64(m.MaxHeap.Top())
 	}
-	return float64(m.MinHeap.Top())
+	if maxHeapLen < minHeapLen {
+		return float64(m.MinHeap.Top())
+	}
+	return float64(m.MaxHeap.Top()+m.MinHeap.Top()) / float64(2)
 }
