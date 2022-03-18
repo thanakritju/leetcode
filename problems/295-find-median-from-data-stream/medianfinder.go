@@ -2,7 +2,6 @@ package findmedianfromdatastream
 
 import (
 	"container/heap"
-	"fmt"
 )
 
 type MedianFinder struct {
@@ -19,22 +18,6 @@ func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
 func (h MaxHeap) Less(i, j int) bool { return h[i] > h[j] }
 func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
 func (h MaxHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
-func (h MinHeap) Top() int {
-	n := len(h)
-	if n == 0 {
-		return 0
-	} else {
-		return h[n-1]
-	}
-}
-func (h MaxHeap) Top() int {
-	n := len(h)
-	if n == 0 {
-		return -1
-	} else {
-		return h[n-1]
-	}
-}
 
 func (h *MinHeap) Push(x interface{}) {
 	*h = append(*h, x.(int))
@@ -80,7 +63,6 @@ func (m *MedianFinder) AddNum(num int) {
 	if minHeapLen-maxHeapLen > 1 {
 		heap.Push(&m.MaxHeap, heap.Pop(&m.MinHeap))
 	}
-	fmt.Printf("minHeap: %v\nmaxHeap: %v\nmedian: %v\n\n", m.MinHeap, m.MaxHeap, m.FindMedian())
 }
 
 func (m *MedianFinder) FindMedian() float64 {
@@ -90,10 +72,10 @@ func (m *MedianFinder) FindMedian() float64 {
 		return 0
 	}
 	if maxHeapLen > minHeapLen {
-		return float64(m.MaxHeap.Top())
+		return float64(m.MaxHeap[0])
 	}
 	if maxHeapLen < minHeapLen {
-		return float64(m.MinHeap.Top())
+		return float64(m.MinHeap[0])
 	}
-	return float64(m.MaxHeap.Top()+m.MinHeap.Top()) / float64(2)
+	return float64(m.MaxHeap[0]+m.MinHeap[0]) / float64(2)
 }
