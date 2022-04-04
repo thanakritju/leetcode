@@ -22,13 +22,13 @@ func maxEvents(events [][]int) int {
 			heap.Pop(&attendables)
 		}
 
-		if len(attendables) == 0 && len(allevents) == 0 {
-			break
-		}
-
-		if len(attendables) > 0 && attendables[0][1] >= day {
+		if len(attendables) > 0 {
 			heap.Pop(&attendables)
 			joined += 1
+		} else {
+			if len(allevents) == 0 {
+				break
+			}
 		}
 	}
 	return joined
