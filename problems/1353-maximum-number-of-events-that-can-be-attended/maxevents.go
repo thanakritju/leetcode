@@ -2,7 +2,6 @@ package maxevents
 
 import (
 	"container/heap"
-	"sort"
 )
 
 type event [][]int
@@ -23,8 +22,13 @@ func maxEvents(events [][]int) int {
 			heap.Pop(&attendables)
 		}
 
-		if len(attendables) > 0 && attendables[0][1] <= day && attendables[0][0] >= day {
-			joined++
+		if len(attendables) == 0 && len(allevents) == 0 {
+			break
+		}
+
+		if len(attendables) > 0 && attendables[0][1] >= day {
+			heap.Pop(&attendables)
+			joined += 1
 		}
 	}
 	return joined
@@ -58,9 +62,4 @@ func (h *minHeap) Pop() interface{} {
 	x := old[n-1]
 	*h = old[0 : n-1]
 	return x
-}
-
-func sortEvents(events [][]int) {
-	e := event(events)
-	sort.Sort(&e)
 }
