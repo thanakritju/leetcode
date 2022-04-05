@@ -13,7 +13,7 @@ func maxEvents(events [][]int) int {
 	heap.Init(&attendables)
 	heap.Init(&allevents)
 	joined := 0
-	for day := 1; day <= 10000; day++ {
+	for day := 1; day <= 100000; day++ {
 		for len(allevents) > 0 && allevents[0][0] <= day {
 			heap.Push(&attendables, heap.Pop(&allevents))
 		}
@@ -25,10 +25,6 @@ func maxEvents(events [][]int) int {
 		if len(attendables) > 0 {
 			heap.Pop(&attendables)
 			joined += 1
-		} else {
-			if len(allevents) == 0 {
-				break
-			}
 		}
 	}
 	return joined
