@@ -1,15 +1,7 @@
 package minsubarray
 
 func minSubarray(nums []int, p int) int {
-	count = 0
-	if divide(nums, p) {
-
-	}
 	return 0
-}
-
-func search(nums []int, p int, count int) bool {
-
 }
 
 func divide(nums []int, p int) bool {
