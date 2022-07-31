@@ -1,7 +1,14 @@
 package kthlargestelementinanarray
 
+import "sort"
+
 func findKthLargest(nums []int, k int) int {
-	return quickSelect(&nums, 0, len(nums)-1, k)
+	return quickSelect(&nums, 0, len(nums)-1, len(nums)-k+1)
+}
+
+func findKthLargest2(nums []int, k int) int {
+	sort.Ints(nums)
+	return nums[len(nums)-k]
 }
 
 func quickSelect(nums *[]int, left, right, k int) int {

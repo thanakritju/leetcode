@@ -19,5 +19,7 @@ func TestFindKthLargest(t *testing.T) {
 	for _, test := range tests {
 		actual := findKthLargest(test.arr, test.k)
 		assert.Equal(t, test.expected, actual, test)
+		actual = findKthLargest2(test.arr, test.k)
+		assert.Equal(t, test.expected, actual, test)
 	}
 }
