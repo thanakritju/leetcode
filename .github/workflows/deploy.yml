@@ -1,3 +1,8 @@
+name: Testing the code and deploying test report
+
+on:
+  push
+
 jobs:
   test:
     runs-on: ubuntu-latest
