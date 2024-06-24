@@ -15,6 +15,7 @@ func TestMinsubarray(t *testing.T) {
 		{[]int{3, 1, 4, 2}, 6, 1},
 		{[]int{6, 3, 5, 2}, 9, 2},
 		{[]int{1, 2, 3}, 3, 0},
+		{[]int{1, 2, 3}, 7, -1},
 	}
 
 	for _, test := range tests {
